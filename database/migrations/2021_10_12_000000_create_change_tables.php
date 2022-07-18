@@ -114,30 +114,30 @@ class CreateChangeTables extends Migration
     {
         $connection = config('database.default');
         if ($connection !== 'pgsql' && $connection !== 'sqlite') { return; }
-        Schema::create('meters', function (Blueprint $table) {
-            $this->defColumn5($table,'meters');
-            $table->decimal('opening',12,2,true);
-            $table->decimal('rtt',12,2,true);
-            $table->decimal('closing',12,2,true);
-            $table->decimal('price',12,2,true);
-            $table->string('new_price_details')->nullable();
-            $table->foreignId('user_id');
-            $table->foreignId('nozzle_id');
-            $table->foreign('nozzle_id')->references('id')->on('nozzles');
-            $table->foreign('user_id')->references('id')->on('users');
-        });
-
-        Schema::create('main_meters', function (Blueprint $table) {
-            $this->defColumn6($table, 'main_meters');
-            $table->decimal('opening',12,2,true);
-            $table->decimal('rtt',12,2,true);
-            $table->decimal('closing',12,2,true);
-            $table->decimal('price',12,2,true);
-            $table->decimal('markup', 12, 2, true)->default(0);
-            $table->string('new_price_details')->nullable();
-            $table->foreignId('nozzle_id');
-            $table->foreign('nozzle_id')->references('id')->on('nozzles');
-        });
+//        Schema::create('meters', function (Blueprint $table) {
+//            $this->defColumn5($table,'meters');
+//            $table->decimal('opening',12,2,true);
+//            $table->decimal('rtt',12,2,true);
+//            $table->decimal('closing',12,2,true);
+//            $table->decimal('price',12,2,true);
+//            $table->string('new_price_details')->nullable();
+//            $table->foreignId('user_id');
+//            $table->foreignId('nozzle_id');
+//            $table->foreign('nozzle_id')->references('id')->on('nozzles');
+//            $table->foreign('user_id')->references('id')->on('users');
+//        });
+//
+//        Schema::create('main_meters', function (Blueprint $table) {
+//            $this->defColumn6($table, 'main_meters');
+//            $table->decimal('opening',12,2,true);
+//            $table->decimal('rtt',12,2,true);
+//            $table->decimal('closing',12,2,true);
+//            $table->decimal('price',12,2,true);
+//            $table->decimal('markup', 12, 2, true)->default(0);
+//            $table->string('new_price_details')->nullable();
+//            $table->foreignId('nozzle_id');
+//            $table->foreign('nozzle_id')->references('id')->on('nozzles');
+//        });
 //        $this->mk_tables('prepaids',function (Blueprint $table){
 //            $table->foreignId('parent_id');
 //            $table->string('description')->nullable();
