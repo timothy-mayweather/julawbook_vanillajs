@@ -1,0 +1,7 @@
+remove jquery.js
+remove fakerphp
+remove facade/igition
+
+
+
+

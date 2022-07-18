@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Julawbook</title>
+    <meta name="csrf-token" content="">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="interface/admin/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="interface/admin/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="interface/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Julaw favicon -->
+    <link rel="icon" href="images/julaw.png" type="image/x-icon" style="border-radius: 15px">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="interface/admin/plugins/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="interface/admin/plugins/DataTables/DataTables-1.10.25/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="interface/admin/plugins/DataTables/Responsive-2.2.9/css/responsive.bootstrap5.min.css">
+    <link rel="stylesheet" href="interface/admin/plugins/DataTables/Buttons-1.7.1/css/buttons.bootstrap5.min.css">
+    <!-- Date picker -->
+    <link rel="stylesheet" href="interface/mc-datepicker/dist/mc-calendar.min.css" />
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/main.css" />
+    <!-- Drag and drop file upload -->
+    <link href="interface/uploader-master/dist/css/jquery.dm-uploader.min.css" rel="stylesheet">
+    <link href="interface/uploader-master/demo/styles.css" rel="stylesheet">
+  </head>
+  <body class="hold-transition layout-fixed">
+    <script src="js/auth.js"></script>
+    <div class="wrapper">
+      <!-- Navbar -->
+      <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+          </li>
+        </ul>
+        <form class="form-inline ml-3" id="user-nav-form">
+          <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="far fa-calendar-alt"></i>
+              </span>
+            </div>
+            <input class="form-control form-control-navbar col-md-2" placeholder="choose date" type="text"  name="datepicker" id="datepicker" title="choose date" style="font-weight:bold; cursor:pointer; color:green; border: 1px solid #ced4da" required>
+            <div class="input-group-prepend shift-field" hidden>
+              <span class="input-group-text bg-gradient-white border-transparent">
+                Shift:
+              </span>
+            </div>
+            <input class="form-control form-control-navbar col-2 shift-field" type="number"  name="shift" id="shift" title="choose shift" style="font-weight:bold; cursor:pointer; color:green; border: 1px solid #ced4da;" required hidden>
+          </div>
+        </form>
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+              <i class="fas fa-th-large"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.navbar -->
+
+      <!-- Main Sidebar Container -->
+      <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <!-- Sidebar user panel (optional) -->
+          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+              <img src="interface/admin/dist/img/avatar3.png" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+              <span class="d-block" style="color: white" id="user_name">Name</span>
+              <span class="d-block" style="color: white" id="branch_name">branch</span>
+              <form method="POST" action="/logout" class="d-block">
+                <a href="#" onclick="event.preventDefault(); logout(event,this.closest('form'));">
+                  <i class="fas fa-sign-out"></i> Log Out
+                </a>
+              </form>
+            </div>
+          </div>
+
+          <!-- Sidebar Menu -->
+          <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+              <!-- Add icons to the links using the .nav-icon class
+                   with font-awesome or any other icon font library -->
+              <li class="nav-item">
+                <a href="#dashboard" class="nav-link side-main-link">
+                  <i class="nav-icon fas fa-home"></i>
+                  <p>
+                    Dashboard
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item has-treeview  menu-open">
+                <a href="#user_form" class="nav-link side-main-link">
+                  <i class="nav-icon fas fa-pen-alt"></i>
+                  <p>
+                    Records
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="#store-files" class="nav-link side-link">
+                      <i class="nav-icon fas fa-file-alt"></i>
+                      <p>
+                        Files
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#meters" class="nav-link side-link">
+                      <i class="nav-icon fas fa-list-ol"></i>
+                      <p>
+                        Meters
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#dips" class="nav-link side-link">
+                      <i class="nav-icon far fa-sort-amount-down-alt"></i>
+                      <p>
+                        Dips
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#sales" class="nav-link side-link">
+                      <i class="nav-icon fas fa-sack-dollar"></i>
+                      <p>
+                        Sales
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#receivables" class="nav-link side-link">
+                      <i class="nav-icon fas fa-hand-holding-usd"></i>
+                      <p>
+                        Receivables
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#transactions" class="nav-link side-link">
+                      <i class="nav-icon fas fa-money-check-alt"></i>
+                      <p>
+                        Transactions
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#debts" class="nav-link side-link">
+                      <i class="nav-icon fas fa-user-minus"></i>
+                      <p>
+                        Debts
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#prepaid" class="nav-link side-link">
+                      <i class="nav-icon fas fa-user-plus"></i>
+                      <p>
+                        Prepaid
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#expenses" class="nav-link side-link">
+                      <i class="nav-icon fas fa-money-bill"></i>
+                      <p>
+                        Expenses
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#inventory" class="nav-link side-link">
+                      <i class="nav-icon fas fa-boxes"></i>
+                      <p>
+                        Inventory
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#meters" class="nav-link side-link">
+                      <i class="nav-icon fas fa-signature"></i>
+                      <p>
+                        Summary
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#report" class="nav-link side-link">
+                      <i class="nav-icon fas fa-file"></i>
+                      <p>
+                        Report
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item has-treeview">
+                <a href="#registry" class="nav-link side-main-link">
+                  <i class="nav-icon fas fa-file-signature"></i>
+                  <p>
+                    Registry
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="#permissions-reg" class="nav-link side-link">
+                      <i class="nav-icon fas fa-key"></i>
+                      <p>
+                        Permissions
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#dispensing-reg" class="nav-link side-link">
+                      <i class="nav-icon fas fa-gas-pump"></i>
+                      <p>
+                        Gas Details
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#products-reg" class="nav-link side-link">
+                      <i class="nav-icon fas fa-cubes"></i>
+                      <p>
+                        Products
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#suppliers-customers-reg" class="nav-link side-link">
+                      <i class="nav-icon fas fa-users"></i>
+                      <p>
+                        Suppliers & Customers
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#expense-reg" class="nav-link side-link">
+                      <i class="nav-icon fas fa-money-bill"></i>
+                      <p>
+                        Expense Types
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#receivable-reg" class="nav-link side-link">
+                      <i class="nav-icon fas fa-money-bill-wave"></i>
+                      <p>
+                        Receivable Types
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#transaction-reg" class="nav-link side-link">
+                      <i class="nav-icon fas fa-money-check"></i>
+                      <p>
+                        Transaction Types
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+          <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <div id="dashboard" hidden="hidden">
+          <br>
+          <!-- Main content -->
+          <section class="content">
+            <div class="container-fluid">
+              <!-- Small boxes (Stat box) -->
+              <div class="row">
+                <div class="col-lg-3 col-6">
+                  <!-- small box -->
+                  <div class="small-box" style="height: 170px;">
+                    <a href="#" class="small-box-footer bg-primary" style="height: 20%"><span style="color: black">Est. fuel in tank <i class="fas fa-glass-whiskey"></i></span></a>
+                    <div class="inner" style="padding: 5px; height: 80%; overflow: auto" id="est-fuel"></div>
+                  </div>
+                </div>
+                <!--./col-->
+                <div class="col-lg-3 col-6">
+                  <!--small box-->
+                  <div class="small-box" style="height: 170px;">
+                    <a href="#" class="small-box-footer bg-success" style="height: 20%"><span style="color: black">Fuel sold today <i class="fas fa-tint"></i></span></a>
+                    <div class="inner" style="height: 80%; overflow: auto" id="today-fuel"></div>
+                  </div>
+                </div>
+                <!--./col-->
+                <div class="col-lg-3 col-6">
+                  <!--small box-->
+                  <div class="small-box" style="height: 170px;">
+                    <a href="#" class="small-box-footer bg-warning" style="height: 20%">Debtors More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <div class="inner" style="height: 80%; overflow: auto">
+                      @foreach($debtors as $debtor=>$debt)
+                      <p style="padding: 3px;"><b>{{$debtor}}: {{$debt}}</b></p>
+                      @endforeach
+                    </div>
+                  </div>
+                </div>
+                <!--./col-->
+                <div class="col-lg-3 col-6">
+                  <!--small box-->
+                  <div class="small-box" style="height: 170px;">
+                    <a href="#" class="small-box-footer bg-danger" style="height: 20%"><span style="color: black">Inventory More info <i class="fas fa-arrow-circle-right"></i></span></a>
+                    <div class="inner" style="height: 80%; overflow: auto">
+                      @foreach($items as $item=>$no)
+                      <p style="padding: 1px;"><b>{{$item}}: {{$no}}</b></p>
+                      @endforeach
+                    </div>
+                  </div>
+                </div>
+                <!--./col-->
+              </div>
+            </div><!-- /.container-fluid -->
+          </section>
+        </div>
+        <form id="user_form" hidden>
+          <br>
+          <!-- Main content -->
+          <section class="content">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-12">
+                  <div id="store-files" hidden>
+                    <main role="main" class="container pt-2" id="drop-container" hidden>
+
+                      <div class="row">
+                        <div class="col-md-6 col-sm-12">
+
+                          <div id="drag-and-drop-zone" class="dm-uploader p-5 text-center">
+                            <h4 class="mb-5 mt-5 text-muted">Drag &amp; drop Files here</h4>
+
+                            <div class="btn btn-block mb-5">
+                              <span><i class="fas fa-arrow-alt-circle-right"></i>Click here to select files</span>
+                              <input type="file" title="Click to add Files" multiple="">
+                            </div>
+                          </div><!-- /uploader -->
+
+                          <div class="mt-2">
+                            <a href="#" class="btn btn-primary" id="btnApiStart">
+                              <i class="fa fa-play"></i> Start
+                            </a>
+                            <a href="#" class="btn btn-danger" id="btnApiCancel">
+                              <i class="fa fa-stop"></i> Stop
+                            </a>
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12" style="resize: none">
+                          <div class="card h-100">
+                            <div class="card-header">
+                              File List
+                            </div>
+
+                            <ul class="list-unstyled p-2 d-flex flex-column col" id="files">
+                              <li class="text-muted text-center empty">No files uploaded.</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div><!-- /file list -->
+
+                      <!-- File item template -->
+                      <script type="text/html" id="files-template">
+                        <li class="media">
+
+                          <div class="media-body mb-1">
+                            <p class="mb-2">
+                              <strong>%%filename%%</strong> - Status: <span class="text-muted">Waiting</span>
+                            </p>
+                            <div class="progress mb-2">
+                              <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                                   role="progressbar"
+                                   style="width: 0"
+                                   aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                              </div>
+                            </div>
+
+                            <p class="controls mb-2">
+                              <button class="btn btn-sm btn-primary start" role="button">Start</button>
+                              <button class="btn btn-sm btn-danger cancel" role="button" disabled="disabled">Cancel</button>
+                            </p>
+
+                            <hr class="mt-1 mb-1" />
+                          </div>
+                        </li>
+                      </script>
+
+                    </main> <!-- /container -->
+                  </div>
+                  <div id="meters" hidden></div>
+                  <div id="dips" hidden></div>
+                  <div id="sales" hidden></div>
+                  <div id="receivables" hidden></div>
+                  <div id="transactions" hidden></div>
+                  <div id="debts" hidden>
+                    <div class="card card-primary card-outline">
+                      <div class="card-header">
+                        <h3 class="card-title">DEBTS</h3>
+                      </div>
+                      <div class="card-body">
+                        <div id="debtTableContainer">
+                          <button type="button" class="btn btn-outline-primary" id="enterDebt">Enter Debt</button>
+                          <table id="debtTable" class="table table-bordered table-hover table-responsive user-form-table" hidden></table>
+                        </div><br>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="prepaid" hidden></div>
+                  <div id="expenses" hidden></div>
+                  <div id="inventory" hidden></div>
+                  <div id="report" hidden></div>
+                </div>
+              </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+          </section>
+          <!-- /.content -->
+        </form>
+        <form id="registry" hidden>
+          <br>
+          <!-- Main content -->
+          <section class="content">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-12">
+                  <div id="permissions-reg" hidden>
+                    <div class="card card-primary card-outline">
+                      <div class="card-header">
+                        <h3 class="card-title">PERMISSIONS</h3>
+                      </div>
+                      <div class="card-body">
+                        <div id='permissionTableContainer'>
+                          <table id="permissionTable" class="table table-bordered table-hover table-responsive registry-table" hidden></table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="dispensing-reg" hidden></div>
+                  <div id="products-reg" hidden></div>
+                  <div id="suppliers-customers-reg" hidden></div>
+                  <div id="expense-reg" hidden></div>
+                  <div id="receivable-reg" hidden></div>
+                  <div id="transaction-reg" hidden></div>
+                </div>
+              </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+          </section>
+          <!-- /.content -->
+        </form>
+      </div>
+
+      <!-- /.content-wrapper -->
+
+      <!-- /.footer -->
+      <footer class="main-footer">
+        <strong id="foot"> <span style="font-family: Orbitron,monospace; text-align: center;">Timothy Kibalama</span>.</strong>
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+          <b>Version</b> 1.0
+        </div>
+      </footer>
+      <!-- /.footer -->
+
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+      </aside>
+      <!-- /.control-sidebar -->
+    </div>
+
+    <!-- modal html -->
+    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal" id="trigModal" hidden>launch</button>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header" style="padding: 0.4rem 0.4rem">
+            <h6 class="modal-title" id="exampleModalLabel">Opening <span class="file-name-ext"></span></h6>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            You have chosen to open: <span class="file-name-ext"></span><br>
+            Alias: <span id="file-alias-ext"></span><br><br>
+            What should julawbook do with this file?<br>
+            <form role="form">
+              <div class="form-group">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="actionChoice" id="openFile" value="openFile" checked>
+                  <label class="form-check-label" for="openFile">
+                    Open
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="actionChoice" id="downloadFile" value="downloadFile">
+                  <label class="form-check-label" for="downloadFile">
+                    Save
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer" style="padding: 0.4rem 0.4rem">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="fileAction()">Ok</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      let filename = '';
+      let alias = '';
+      let fileLink = '';
+      let fileId = '';
+      let fileEl = null;
+
+      document.getElementById('exampleModal').addEventListener('shown.bs.modal', function () {
+        document.getElementById('openFile').focus()
+        document.getElementById("file-alias-ext").innerHTML = alias;
+        let nameField = document.getElementsByClassName("file-name-ext");
+        nameField[0].innerHTML = filename;
+        nameField[1].innerHTML = filename;
+      });
+
+      function fileAction(){
+        if(document.getElementById("openFile").checked){
+          //open file
+          fetch(address+'/path/'+fileId,{method:'get', headers: headers,body: null})
+            .then((response)=>response.text())
+            .then((data)=>{
+              openFile(data);
+            });
+        }
+        else{
+          //download file
+          download(fileEl,fileLink);
+        }
+      }
+    </script>
+    <!-- modal html -->
+
+    <script src="js/init.js"></script>
+
+    <!-- wrapper -->
+    <!-- jQuery -->
+    <script src="interface/admin/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 5 -->
+    <script src="interface/admin/plugins/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables -->
+    <script src="interface/admin/plugins/DataTables/DataTables-1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="interface/admin/plugins/DataTables/DataTables-1.10.25/js/dataTables.bootstrap5.min.js"></script>
+    <script src="interface/admin/plugins/DataTables/Responsive-2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="interface/admin/plugins/DataTables/Responsive-2.2.9/js/responsive.bootstrap5.min.js"></script>
+    <script src="interface/admin/plugins/DataTables/Buttons-1.7.1/js/dataTables.buttons.min.js"></script>
+    <script src="interface/admin/plugins/DataTables/Buttons-1.7.1/js/buttons.bootstrap5.min.js"></script>
+<!--    <script src="interface/admin/plugins/DataTables/JSZip-2.5.0/jszip.min.js"></script>-->
+<!--    <script src="interface/admin/plugins/DataTables/pdfmake-0.1.36/pdfmake.min.js"></script>-->
+<!--    <script src="interface/admin/plugins/DataTables/pdfmake-0.1.36/vfs_fonts.js"></script>-->
+    <script src="interface/admin/plugins/DataTables/Buttons-1.7.1/js/buttons.html5.min.js"></script>
+    <script src="interface/admin/plugins/DataTables/Buttons-1.7.1/js/buttons.print.min.js"></script>
+    <script src="interface/admin/plugins/DataTables/Buttons-1.7.1/js/buttons.colVis.min.js"></script>
+    <!-- MC-calender -->
+    <script src="interface/mc-datepicker/dist/mc-calendar.min.js"></script>
+
+    <!-- Notify.js -->
+    <script src="interface/admin/plugins/notify.min.js"></script>
+    <!-- overlayScrollbars (scrollbars indeed) -->
+    <script src="interface/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App (hosts main.js for the app)-->
+    <script src="interface/admin/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes (hosts the left sidebar settings)-->
+    <script src="interface/admin/dist/js/demo.js"></script>
+    <!-- Main js -->
+    <script src="js/main.js"></script>
+    <!-- UIComponents -->
+    <script src="js/components.js" type="text/javascript"></script>
+    <script src="js/crudTable.js" type="text/javascript"></script>
+    <script src="js/dashboard.js" type="text/javascript"></script>
+    <script src="js/registry.js" type="text/javascript"></script>
+    <script src="js/records.js" type="text/javascript"></script>
+    <!-- Drag and drop upload -->
+    <script src="interface/uploader-master/src/js/jquery.dm-uploader.js"></script>
+    <script src="interface/uploader-master/src/js/ui-multiple.js"></script>
+    <script src="interface/uploader-master/src/js/controls.js"></script>
+
+    <script>
+      $('.form-table').on('click', 'input[type=text]', function(){
+        let el = $(this);
+        if (el.attr('class').match(/(input-lower|input-upper|input-float|input-int)/g)&&!el.attr('class').match(/(input-valid)/g)) {
+          el.attr('class',el.attr('class')+' input-valid');
+          el.on('input',()=>inputValidate(el[0]));
+        }
+      });
+    </script>
+  </body>
+</html>

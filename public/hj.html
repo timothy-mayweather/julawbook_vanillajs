@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="interface/admin/plugins/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+</head>
+<body>
+<a href="#" onclick="trigButton(event)">Trigger</a>
+<!-- Button trigger modal -->
+<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal" id="trigModal" hidden>launch</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="padding: 0.4rem 0.4rem">
+        <h6 class="modal-title" id="exampleModalLabel">Opening <span class="file-name-ext"></span></h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You have chosen to open: <span class="file-name-ext"></span><br>
+        Alias: <span id="file-alias-ext"></span><br><br>
+        What should julawbook do with this file?<br>
+        <form role="form">
+          <div class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="actionChoice" id="openFile" value="openFile" checked>
+              <label class="form-check-label" for="openFile">
+                Open
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="actionChoice" id="downloadFile" value="downloadFile">
+              <label class="form-check-label" for="downloadFile">
+                Save
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" style="padding: 0.4rem 0.4rem">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="fileAction()">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="interface/admin/plugins/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  let myModal = document.getElementById('exampleModal')
+  let myInput = document.getElementById('openFile')
+  let filename = 'filename.ext';
+  let alias = 'alias.ext';
+
+  myModal.addEventListener('shown.bs.modal', function () {
+    document.getElementById("file-alias-ext").innerHTML = alias;
+    let nameField = document.getElementsByClassName("file-name-ext");
+    nameField[0].innerHTML = filename; nameField[1].innerHTML = filename;
+    myInput.focus()
+  })
+
+  function fileAction(){
+    if(document.getElementById("openFile").checked){
+      console.log("openFile")
+    }
+    else{
+      console.log("saveFile")
+    }
+  }
+
+  function trigButton(event){
+    event.preventDefault()
+    document.getElementById('trigModal').click();
+  }
+</script>
+</body>
+</html>
