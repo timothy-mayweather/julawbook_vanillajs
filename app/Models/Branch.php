@@ -34,20 +34,11 @@ class Branch extends Model
         'user_',
         'user_d',
         'location',
-        'active',
         'created_at',
         'updated_at',
         'deleted_at'
     ];
 
-    /**
-     * The attributes that have default values
-     *
-     * @var array
-     */
-    protected $attributes = [
-        'active' => 'Yes',
-    ];
 
     public function customers(): BelongsToMany
     {

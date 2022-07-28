@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class Common extends Controller
 {
@@ -134,7 +135,12 @@ class Common extends Controller
             if($arr[0]===1){
                 return Response($arr[1]);
             }
-            $this->modelClass::create($arr[1]);
+            $modelObj = new $this->modelClass($arr[1]);
+            if (config('database.default')==='sqlite') {
+                $modelObj->setAttribute('id',0);
+                $modelObj->setAttribute('provisional',Str::uuid()->toString());
+            }
+            $modelObj->save();
             $count++;
         }
         return Response(0);

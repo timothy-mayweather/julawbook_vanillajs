@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
-use App\Models\BranchUser;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -16,7 +15,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -49,8 +47,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-
-        $user = User::create([
+        $user = new User([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
@@ -58,8 +55,16 @@ class RegisteredUserController extends Controller
             'branch_id' => $request->branch,
             'active' => 'No',
         ]);
+        if (config('database.default')==='sqlite') {
+            $user->setAttribute('id',0);
+            $user->setAttribute('provisional',Str::uuid()->toString());
+        }
+        $user->save();
 
-        if(User::find($user->id)->active==='No'){
+
+        $user = User::where('email', $request->email)->get()[0];
+
+        if($user->active==='No'){
             return redirect('/login');
         }
         event(new Registered($user));
@@ -89,7 +94,7 @@ class RegisteredUserController extends Controller
             return Response($validator->errors());
         }
 
-        User::create([
+        $user = new User([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
@@ -97,6 +102,11 @@ class RegisteredUserController extends Controller
             'branch_id' => $request->branch,
             'active' => 'No',
         ]);
+        if (config('database.default')==='sqlite') {
+            $user->setAttribute('id',0);
+            $user->setAttribute('provisional',Str::uuid()->toString());
+        }
+        $user->save();
 
         return ["redirect"=>"#login"];
     }

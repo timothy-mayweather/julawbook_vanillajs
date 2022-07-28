@@ -24,7 +24,7 @@ class EmployeeController extends Common
     {
         $user_id = null;
         if($record['user'] === 'Yes') {
-            $user_id = User::create([
+            $user = new User([
                 'name' => $record['name'],
                 'email' => $record['email'],
                 'phone' => $record['phone'],
@@ -32,7 +32,14 @@ class EmployeeController extends Common
                 'branch_id' => $request->user()->branch_id,
                 'password' => Hash::make(hrtime(true)),
                 'user_' => $request->user()->id,
-            ])->id;
+            ]);
+            if (config('database.default')==='sqlite') {
+                $user->setAttribute('id',0);
+                $user->setAttribute('provisional',Str::uuid()->toString());
+            }
+            $user->save();
+            $user_id = User::where('email', $record['email'])->get()[0];
+
         }
 
         return [0,[

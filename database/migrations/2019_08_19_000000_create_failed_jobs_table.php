@@ -13,10 +13,6 @@ class CreateFailedJobsTable extends Migration
      */
     public function up(): void
     {
-        $connection = config('database.default');
-        if($connection!=='pgsql'&&$connection!=='sqlite'){
-            return;
-        }
         Schema::create('failed_jobs', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();

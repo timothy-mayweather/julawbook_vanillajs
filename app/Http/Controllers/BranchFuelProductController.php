@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class BranchFuelProductController extends CommonPivot
 {
@@ -32,14 +33,20 @@ class BranchFuelProductController extends CommonPivot
             return Response($validator->errors());
         }
 
-        $stored = BranchFuelProduct::create([
-            //'id' => $request->branch.$request->model,
+        $stored = new BranchFuelProduct([
             'branch_id' => $request->branch,
             'product_id' => $request->model,
             'price' => $request->price,
             'active' => $request->active,
             'user_' => $request->user()->id,
         ]);
+        if (config('database.default')==='sqlite') {
+            $stored->setAttribute('id',0);
+            $stored->setAttribute('provisional',Str::uuid()->toString());
+        }
+        $stored->save();
+
+        $stored = DB::select("select * from branch_fuel_products where product_id=$request->model and branch_id=$request->branch;")[0];
         return Response($stored->id ?? -1);
     }
 
