@@ -79,7 +79,11 @@ class CreateMajorTables extends Migration
             $table->string('name');
             $table->string('phone')->unique();
             $table->string('email')->unique();
-            $table->enum('manager', ['No', 'Yes', 'Root'])->default('No');
+            if ($this->connection === 'sqlite') {
+                $table->enum('manager', ['No', 'Yes', 'Root'])->default('No');
+            }else{
+                $table->enum('manager', ['No', 'Yes', 'Root','Client'])->default('No');
+            }
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

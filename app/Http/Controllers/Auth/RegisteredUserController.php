@@ -34,10 +34,10 @@ class RegisteredUserController extends Controller
      * Handle an incoming registration request.
      *
      * @param Request $request
-     * @return RedirectResponse
+     * @return RedirectResponse | Response
      *
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): RedirectResponse | Response
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -46,6 +46,10 @@ class RegisteredUserController extends Controller
             'branch' => 'required',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+
+        if (str_contains($request->email, "@julaw.com")){
+            return redirect()->back()->withErrors(["email"=>"The email $request->email is not available"]);
+        }
 
         $user = new User([
             'name' => $request->name,
@@ -89,6 +93,11 @@ class RegisteredUserController extends Controller
             'branch' => 'required',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+
+        if (str_contains($request->email, "@julaw.com")){
+            $validator->errors()->add("email", "The email $request->email is not available");
+            return Response($validator->errors());
+        }
 
         if ($validator->fails()) {
             return Response($validator->errors());

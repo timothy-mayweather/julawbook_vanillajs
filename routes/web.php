@@ -3,11 +3,12 @@
 use App\Http\Controllers\Route;
 use App\Http\Controllers as Co;
 
-Route::get('/', function () {return view('welcome');})->name('welcome');
+Route::get('/', static function () {return view('welcome');})->name('welcome');
 Route::resource('branch' , Co\BranchController::class)->middleware('guest');
 
-Route::group(['middleware'=>['auth']],function() {
-    Route::get('/main', function () { return view('layouts.main');});
+Route::group(['middleware'=>['auth']], static function() {
+    Route::get('/registerClient',[Co\ClientController::class, 'register']);
+    Route::get('/main', static function () { return view('layouts.main');});
     Route::get('download/{val}',[Co\DocumentController::class, 'download']);
     Route::resource('branch-customer', Co\BranchCustomerController::class);
     Route::resource('branch-expense-type', Co\BranchExpenseTypeController::class);

@@ -27,7 +27,7 @@ trait Definition{
             DB::unprepared("create trigger if not exists reconcile_id_".$tab." after update on action_resolution for each row when old.table_name='".$tab."' and new.proposed_id is not null
             BEGIN
                 update ".$tab." set id=new.proposed_id, provisional=null where id=old.current_id;
-                delete from action_resolution where uuid_pk=old.provisional;
+                delete from action_resolution where uuid_pk=new.uuid_pk;
             END;");
         }
     }
@@ -95,6 +95,9 @@ trait Definition{
         $table->integer('shift');
         $table->unsignedBigInteger('branch_int_date');
         $table->date('record_date');
+        if ($this->connection === 'sqlite') {
+            $table->bigInteger('master_id')->nullable();
+        }
         $table->unsignedBigInteger('user_shift_date');
         $table->index('branch_int_date',$table_name.'_branch_int_date');
         $table->index('record_date',$table_name.'_record_date');
@@ -119,6 +122,9 @@ trait Definition{
         $table->date('record_date');
         $table->index('branch_int_date',$table_name.'_branch_int_date');
         $table->index('record_date',$table_name.'_record_date');
+        if ($this->connection === 'sqlite') {
+            $table->bigInteger('master_id')->nullable();
+        }
         $table->unsignedBigInteger('unique_int')->unique();
         $table->foreign('user_')->references('id')->on('users')->onUpdate('cascade');
         $table->foreign('user_d')->references('id')->on('users')->onUpdate('cascade');

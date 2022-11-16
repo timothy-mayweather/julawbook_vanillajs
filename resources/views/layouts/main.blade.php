@@ -63,9 +63,6 @@
     <script src="{{ asset('interface/admin/plugins/DataTables/Responsive-2.2.9/js/responsive.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('interface/admin/plugins/DataTables/Buttons-1.7.1/js/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('interface/admin/plugins/DataTables/Buttons-1.7.1/js/buttons.bootstrap5.min.js') }}"></script>
-{{--    <script src="{{ asset('interface/admin/plugins/DataTables/JSZip-2.5.0/jszip.min.js') }}"></script>--}}
-{{--    <script src="{{ asset('interface/admin/plugins/DataTables/pdfmake-0.1.36/pdfmake.min.js') }}"></script>--}}
-{{--    <script src="{{ asset('interface/admin/plugins/DataTables/pdfmake-0.1.36/vfs_fonts.js') }}"></script>--}}
     <script src="{{ asset('interface/admin/plugins/DataTables/Buttons-1.7.1/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('interface/admin/plugins/DataTables/Buttons-1.7.1/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('interface/admin/plugins/DataTables/Buttons-1.7.1/js/buttons.colVis.min.js') }}"></script>
@@ -79,7 +76,7 @@
     <script src="{{ asset('interface/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
     <!-- AdminLTE App (hosts main.js for the app)-->
     <script src="{{ asset('interface/admin/dist/js/adminlte.min.js')}}"></script>
-    <!-- AdminLTE for demo purposes (hosts the left side bar settings)-->
+    <!-- AdminLTE for demo purposes (hosts the left sidebar settings)-->
     <script src="{{ asset('interface/admin/dist/js/demo.js')}}"></script>
     <!-- UIComponents -->
     <script src="{{ asset('js/components.js') }}" type="text/javascript"></script>

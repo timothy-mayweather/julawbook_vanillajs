@@ -23,14 +23,14 @@
         <div class="mb-3">
           <x-label for="email" :value="__('Email')" />
 
-          <x-input id="email" type="email" name="email" :value="old('email')" required autofocus />
+          <x-input id="email" type="email" name="email" :value="old('email')" required autofocus value="kakoogemanager@julaw.com"/>
         </div>
 
         <!-- Password -->
         <div class="mb-3">
           <x-label for="password" :value="__('Password')" />
 
-          <x-input id="password" type="password" name="password" required autocomplete="current-password" />
+          <x-input id="password" type="password" name="password" required autocomplete="current-password" value="12345678"/>
         </div>
 
         <!-- Remember Me -->

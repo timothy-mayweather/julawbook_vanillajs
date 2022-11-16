@@ -29,10 +29,16 @@ Route::post('/register', [RegisteredUserController::class, 'store2']);
 Route::get('download/{val}',[Co\DocumentController::class, 'download']);
 Route::get('path/{val}',[Co\DocumentController::class, 'getPath']);
 
-Route::group(['middleware'=>['auth:sanctum']],function() {
+//Route::post('/fetch_new');
+
+Route::group(['middleware'=>['auth:sanctum']], static function() {
     Route::get('/is_auth', static function (){
         return ["auth"=>true];
     });
+    Route::post('/pull_init_major', [Co\ClientController::class, 'send_init_major']);
+    Route::post('/pull_init_minor', [Co\ClientController::class, 'send_init_minor']);
+    Route::post('/push', [Co\ClientController::class, 'receive']);
+
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy2']);
     Route::apiResource('branch-customer', Co\BranchCustomerController::class);
     Route::apiResource('branch-expense-type', Co\BranchExpenseTypeController::class);
